@@ -1,0 +1,39 @@
+#Lab-7 Team 6
+#Due March 15, 2020
+
+#Team:
+#Rahim Abdulmalik 33.3%
+#Raul Beiza 33.3%
+#Melvin Zaldivar 33.3%
+
+#Libraries Used
+library(stats)
+
+#===============================================
+#===============================================
+
+#Predicting Medical Expenses Problem 1
+
+#Import the data
+InsuranceDf <- read.csv('insurance.csv')
+str(InsuranceDf)
+
+#Preprocessing
+summary(InsuranceDf$expenses)
+hist(InsuranceDf$expenses)
+cor(InsuranceDf[c('age','bmi','children','expenses')])
+pairs(InsuranceDf[c('age','bmi','children','expenses')])
+
+#Apply the Model
+InsuranceTest <- lm(expenses ~ ., InsuranceDf)
+InsuranceTest
+
+#Evaluate the Model
+summary(InsuranceTest)
+
+#Improve Performance
+InsuranceDf$age2 <- InsuranceDf$age^2
+InsuranceDf$bmi30 <- ifelse(InsuranceDf$bmi >= 30, 1, 0)
+
+InsuranceTest2 <- lm(expenses ~ . + smoker*bmi30, InsuranceDf)
+summary(InsuranceTest2)
