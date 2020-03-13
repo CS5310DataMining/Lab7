@@ -1,0 +1,53 @@
+#Lab-7 Team 6
+#Due March 15, 2020
+
+#Team 6:
+#Rahim Abdulmalik 33.3%
+#Raul Beiza 33.3%
+#Melvin Zaldivar 33.3%
+
+#Libraries Used
+library(rpart)
+library(rpart.plot)
+library(RWeka)
+#===============================================
+#===============================================
+
+#Estimating quality of wines Problem 2
+
+#1. Import the data
+WineDf <- read.csv('whitewines.csv', stringsAsFactors = FALSE)
+str(WineDf)
+
+#2. Preprocess
+table(WineDf$quality)
+hist(WineDf$quality)
+
+WineTrain <- WineDf[1:3428, ]
+WineTest <- WineDf[3429:4898, ]
+
+#3. Apply the Regression model
+WineRTModel <- rpart(quality ~ ., WineTrain)
+WineRTModel
+
+#4. Evaluate Model
+WinePredict <- predict(WineRTModel, WineTest)
+summary(WinePredict)
+summary(WineTest$quality)
+cor(WinePredict, WineTest$quality)
+#What is the mean absolute error
+Mae <- function (actual, prediction) {
+  mean(abs(actual - prediction))
+}
+Mae(WinePredict,WineTest$quality)
+
+#5. Improving the Model
+WineM2 <- M5P(quality ~ ., WineTrain)
+summary(WineM2)
+
+WinePredict2 <- predict(WineM2, WineTest)
+summary(WinePredict2)
+
+cor(WinePredict2, WineTest$quality)
+Mae(WineTest$quality, WinePredict2)
+
