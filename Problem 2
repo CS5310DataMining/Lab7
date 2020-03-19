@@ -9,7 +9,7 @@
 #Libraries Used
 library(rpart)
 library(rpart.plot)
-library(RWeka)
+library(Cubist)
 #===============================================
 #===============================================
 
@@ -42,12 +42,15 @@ Mae <- function (actual, prediction) {
 Mae(WinePredict,WineTest$quality)
 
 #5. Improving the Model
-WineM2 <- M5P(quality ~ ., WineTrain)
+#5. Improving the Model
+WineM2 <- cubist(x=WineTrain[-12], y=WineTrain$quality)
+WineM2
 summary(WineM2)
 
+# Examine performance
 WinePredict2 <- predict(WineM2, WineTest)
 summary(WinePredict2)
 
+# Correlation and MAE
 cor(WinePredict2, WineTest$quality)
 Mae(WineTest$quality, WinePredict2)
-
